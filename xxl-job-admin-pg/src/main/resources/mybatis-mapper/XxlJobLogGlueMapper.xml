@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xxl.job.admin.dao.XxlJobLogGlueDao">
-	
-	<resultMap id="XxlJobLogGlue" type="com.xxl.job.admin.core.model.XxlJobLogGlue" >
-		<result column="id" property="id" />
-	    <result column="job_id" property="jobId" />
-		<result column="glue_type" property="glueType" />
-	    <result column="glue_source" property="glueSource" />
-	    <result column="glue_remark" property="glueRemark" />
-	    <result column="add_time" property="addTime" />
-	    <result column="update_time" property="updateTime" />
-	</resultMap>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.poem.dao.XxlJobLogGlueDao">
 
-	<sql id="Base_Column_List">
+    <resultMap id="XxlJobLogGlue" type="org.poem.core.model.XxlJobLogGlue">
+        <result column="id" property="id"/>
+        <result column="job_id" property="jobId"/>
+        <result column="glue_type" property="glueType"/>
+        <result column="glue_source" property="glueSource"/>
+        <result column="glue_remark" property="glueRemark"/>
+        <result column="add_time" property="addTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
 		t.id,
 		t.job_id,
 		t.glue_type,
@@ -22,36 +22,40 @@
 		t.add_time,
 		t.update_time
 	</sql>
-	
-	<insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobLogGlue" useGeneratedKeys="true" keyProperty="id" >
-		INSERT INTO xxl_job_logglue (
-			"job_id",
-			"glue_type",
-			"glue_source",
-			"glue_remark",
-			"add_time",
-			"update_time"
-		) VALUES (
-			#{jobId},
-			#{glueType},
-			#{glueSource},
-			#{glueRemark},
-			#{addTime},
-			#{updateTime}
-		);
-		<!--<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
-			SELECT LAST_INSERT_ID() 
-		</selectKey>-->
-	</insert>
-	
-	<select id="findByJobId" parameterType="java.lang.Long" resultMap="XxlJobLogGlue">
-		SELECT <include refid="Base_Column_List" />
-		FROM xxl_job_logglue AS t
-		WHERE t.job_id = #{jobId}
-		ORDER BY id DESC
-	</select>
-	
-	<delete id="removeOld" >
+
+    <insert id="save" parameterType="org.poem.core.model.XxlJobLogGlue" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO xxl_job_logglue (
+        "id",
+        "job_id",
+        "glue_type",
+        "glue_source",
+        "glue_remark",
+        "add_time",
+        "update_time"
+        ) VALUES (
+        #{id},
+        #{jobId},
+        #{glueType},
+        #{glueSource},
+        #{glueRemark},
+        #{addTime},
+        #{updateTime}
+        );
+        <!--<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>-->
+    </insert>
+
+    <select id="findByJobId" parameterType="java.lang.Long" resultMap="XxlJobLogGlue">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM xxl_job_logglue AS t
+        WHERE t.job_id = #{jobId}
+        ORDER BY id DESC
+    </select>
+
+    <delete id="removeOld">
 		DELETE FROM xxl_job_logglue
 		WHERE id NOT in(
 			SELECT id FROM(
@@ -62,10 +66,10 @@
 			) t1
 		) AND "job_id" = #{jobId}
 	</delete>
-	
-	<delete id="deleteByJobId" parameterType="java.lang.Long" >
+
+    <delete id="deleteByJobId" parameterType="java.lang.Long">
 		DELETE FROM xxl_job_logglue
 		WHERE "job_id" = #{jobId}
 	</delete>
-	
+
 </mapper>
