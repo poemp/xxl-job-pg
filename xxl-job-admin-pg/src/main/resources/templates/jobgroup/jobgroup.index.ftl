@@ -41,15 +41,15 @@
                     </div>
                 </div>
                 <div class="col-xs-2">
-                    <button class="btn btn-block btn-info" id="searchBtn">${I18n.system_search}</button>
+                    <button class="btn btn-block btn-info" style="border-radius:10px" id="searchBtn">${I18n.system_search}</button>
                 </div>
                 <div class="col-xs-2">
-                    <button class="btn btn-block btn-success add" type="button">${I18n.jobinfo_field_add}</button>
+                    <button class="btn btn-block btn-success add" style="border-radius:10px" type="button">${I18n.jobinfo_field_add}</button>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-12"  style="margin-top: 20px">
                     <div class="box">
                         <div class="box-body">
                             <table id="jobgroup_list" class="table table-bordered table-striped display" width="100%">
@@ -119,8 +119,8 @@
                         <hr>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-6">
-                                <button type="submit" class="btn btn-primary">${I18n.system_save}</button>
-                                <button type="button" class="btn btn-default"
+                                <button type="submit" class="btn btn-primary" style="border-radius:10px" >${I18n.system_save}</button>
+                                <button type="button" class="btn btn-default" style="border-radius:10px"
                                         data-dismiss="modal">${I18n.system_cancel}</button>
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                         <hr>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-6">
-                                <button type="submit" class="btn btn-primary">${I18n.system_save}</button>
+                                <button style="border-radius:10px" style="border-radius:10px" type="submit" class="btn btn-primary">${I18n.system_save}</button>
                                 <button type="button" class="btn btn-default"
                                         data-dismiss="modal">${I18n.system_cancel}</button>
                                 <input type="hidden" name="id">

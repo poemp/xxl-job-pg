@@ -73,16 +73,16 @@
                 </div>
 
                 <div class="col-xs-1">
-                    <button class="btn btn-block btn-info" id="searchBtn">${I18n.system_search}</button>
+                    <button style="border-radius:10px" class="btn btn-block btn-info" id="searchBtn">${I18n.system_search}</button>
                 </div>
 
                 <div class="col-xs-1">
-                    <button class="btn btn-block btn-nomal" id="clearLog">${I18n.joblog_clean}</button>
+                    <button style="border-radius:10px" class="btn btn-block btn-nomal" id="clearLog">${I18n.joblog_clean}</button>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-12"  style="margin-top: 20px">
                     <div class="box">
                         <#--<div class="box-header hide"><h3 class="box-title">调度日志</h3></div>-->
                         <div class="box-body">
@@ -161,8 +161,8 @@
                     <hr>
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-6">
-                            <button type="button" class="btn btn-primary ok">${I18n.system_ok}</button>
-                            <button type="button" class="btn btn-default"
+                            <button style="border-radius:10px" type="button" class="btn btn-primary ok">${I18n.system_ok}</button>
+                            <button style="border-radius:10px" type="button" class="btn btn-default"
                                     data-dismiss="modal">${I18n.system_cancel}</button>
                         </div>
                     </div>

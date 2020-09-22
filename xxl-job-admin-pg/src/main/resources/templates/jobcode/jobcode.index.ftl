@@ -27,7 +27,7 @@
                 <#-- icon -->
                 <div class="navbar-header">
                     <a class="navbar-brand"><b>Web</b>IDE</a>
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    <button type="button" style="border-radius:10px" class="navbar-toggle collapsed" data-toggle="collapse"
                             data-target="#navbar-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
@@ -118,8 +118,8 @@
                     <hr>
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-6">
-                            <button type="button" class="btn btn-primary ok">${I18n.system_save}</button>
-                            <button type="button" class="btn btn-default"
+                            <button type="button" style="border-radius:10px" class="btn btn-primary ok">${I18n.system_save}</button>
+                            <button type="button" style="border-radius:10px" class="btn btn-default"
                                     data-dismiss="modal">${I18n.system_cancel}</button>
                         </div>
                     </div>

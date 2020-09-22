@@ -15,7 +15,7 @@
                 <#-- icon -->
                 <div class="navbar-header">
                     <a class="navbar-brand"><b>${I18n.joblog_rolling_log}</b> Console</a>
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    <button type="button"  style="border-radius:10px" class="navbar-toggle collapsed" data-toggle="collapse"
                             data-target="#navbar-collapse">
                         <i class="fa fa-bars"></i>
                     </button>

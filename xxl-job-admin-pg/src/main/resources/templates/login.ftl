@@ -33,7 +33,7 @@
                     </div>
                 </div><!-- /.col -->
                 <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">${I18n.login_btn}</button>
+                    <button style="border-radius:10px" type="submit" class="btn btn-primary btn-block btn-flat">${I18n.login_btn}</button>
                 </div>
             </div>
         </div>

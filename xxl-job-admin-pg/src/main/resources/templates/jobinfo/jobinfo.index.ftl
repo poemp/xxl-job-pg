@@ -65,15 +65,15 @@
                     </div>
                 </div>
                 <div class="col-xs-1">
-                    <button class="btn btn-block btn-info" id="searchBtn">${I18n.system_search}</button>
+                    <button class="btn btn-block btn-info" style="border-radius:10px" id="searchBtn">${I18n.system_search}</button>
                 </div>
                 <div class="col-xs-1">
-                    <button class="btn btn-block btn-success add" type="button">${I18n.jobinfo_field_add}</button>
+                    <button class="btn btn-block btn-success add" type="button" style="border-radius:10px" >${I18n.jobinfo_field_add}</button>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-12" style="margin-top: 20px">
                     <div class="box">
                         <#--<div class="box-header hide">
                             <h3 class="box-title">调度列表</h3>
@@ -223,8 +223,8 @@
                     <hr>
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-6">
-                            <button type="submit" class="btn btn-primary">${I18n.system_save}</button>
-                            <button type="button" class="btn btn-default"
+                            <button type="submit" style="border-radius:10px" class="btn btn-primary">${I18n.system_save}</button>
+                            <button type="button" style="border-radius:10px" class="btn btn-default"
                                     data-dismiss="modal">${I18n.system_cancel}</button>
                         </div>
                     </div>
@@ -453,8 +453,8 @@ exit 0
                     <hr>
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-6">
-                            <button type="submit" class="btn btn-primary">${I18n.system_save}</button>
-                            <button type="button" class="btn btn-default"
+                            <button type="submit"style="border-radius:10px"  class="btn btn-primary">${I18n.system_save}</button>
+                            <button type="button" style="border-radius:10px" class="btn btn-default"
                                     data-dismiss="modal">${I18n.system_cancel}</button>
                             <input type="hidden" name="id">
                         </div>
@@ -496,8 +496,8 @@ exit 0
                     <hr>
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-6">
-                            <button type="button" class="btn btn-primary ok">${I18n.system_save}</button>
-                            <button type="button" class="btn btn-default"
+                            <button type="button" style="border-radius:10px" class="btn btn-primary ok">${I18n.system_save}</button>
+                            <button type="button" style="border-radius:10px" class="btn btn-default"
                                     data-dismiss="modal">${I18n.system_cancel}</button>
                             <input type="hidden" name="id">
                         </div>
