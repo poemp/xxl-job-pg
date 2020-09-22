@@ -45,7 +45,8 @@ public class JobRegistryMonitorHelper {
 
                             // fresh online address (admin/executor)
                             HashMap<String, List<String>> appAddressMap = new HashMap<String, List<String>>();
-                            List<XxlJobRegistry> list = XxlJobAdminConfig.getAdminConfig().getXxlJobRegistryDao().findAll(RegistryConfig.DEAD_TIMEOUT, new Date())if (list != null) {
+                            List<XxlJobRegistry> list = XxlJobAdminConfig.getAdminConfig().getXxlJobRegistryDao().findAll(RegistryConfig.DEAD_TIMEOUT, new Date());
+                            if (list != null) {
                                 for (XxlJobRegistry item : list) {
                                     if (RegistryConfig.RegistType.EXECUTOR.name().equals(item.getRegistryGroup())) {
                                         String appname = item.getRegistryKey();
