@@ -33,16 +33,16 @@
 	</select>
 
 	<insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobGroup" useGeneratedKeys="true" keyProperty="id" >
-		INSERT INTO xxl_job_group ( `app_name`, `title`, `address_type`, `address_list`)
+		INSERT INTO xxl_job_group ( "app_name", "title", "address_type", "address_list")
 		values ( #{appname}, #{title}, #{addressType}, #{addressList});
 	</insert>
 
 	<update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobGroup" >
 		UPDATE xxl_job_group
-		SET `app_name` = #{appname},
-			`title` = #{title},
-			`address_type` = #{addressType},
-			`address_list` = #{addressList}
+		SET "app_name" = #{appname},
+			"title" = #{title},
+			"address_type" = #{addressType},
+			"address_list" = #{addressList}
 		WHERE id = #{id}
 	</update>
 
