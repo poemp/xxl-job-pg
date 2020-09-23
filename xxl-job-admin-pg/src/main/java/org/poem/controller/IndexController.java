@@ -1,9 +1,12 @@
 package org.poem.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.poem.controller.annotation.PermissionLimit;
 import org.poem.service.LoginService;
 import org.poem.service.XxlJobService;
 import org.poem.biz.model.ReturnT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +33,8 @@ import java.util.Map;
 @Controller
 public class IndexController {
 
+    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+
     @Resource
     private XxlJobService xxlJobService;
     @Resource
@@ -38,7 +43,7 @@ public class IndexController {
 
     @RequestMapping("/")
     public String index(Model model) {
-
+        logger.info("IndexController-/");
         Map<String, Object> dashboardMap = xxlJobService.dashboardInfo();
         model.addAllAttributes(dashboardMap);
 
@@ -48,6 +53,7 @@ public class IndexController {
     @RequestMapping("/chartInfo")
     @ResponseBody
     public ReturnT<Map<String, Object>> chartInfo(Date startDate, Date endDate) {
+        logger.info("IndexController-chartInfo ");
         ReturnT<Map<String, Object>> chartInfo = xxlJobService.chartInfo(startDate, endDate);
         return chartInfo;
     }
@@ -55,6 +61,7 @@ public class IndexController {
     @RequestMapping("/toLogin")
     @PermissionLimit(limit = false)
     public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView) {
+        logger.info("IndexController-toLogin ");
         if (loginService.ifLogin(request, response) != null) {
             modelAndView.setView(new RedirectView("/", true, false));
             return modelAndView;
@@ -66,6 +73,7 @@ public class IndexController {
     @ResponseBody
     @PermissionLimit(limit = false)
     public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String userName, String password, String ifRemember) {
+        logger.info("IndexController-loginDo ");
         boolean ifRem = (ifRemember != null && ifRemember.trim().length() > 0 && "on".equals(ifRemember)) ? true : false;
         return loginService.login(request, response, userName, password, ifRem);
     }
@@ -74,6 +82,7 @@ public class IndexController {
     @ResponseBody
     @PermissionLimit(limit = false)
     public ReturnT<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("IndexController-logout ");
         return loginService.logout(request, response);
     }
 
@@ -89,6 +98,7 @@ public class IndexController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
+        logger.info("IndexController-initBinder ");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));

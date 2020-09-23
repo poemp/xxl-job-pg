@@ -16,6 +16,8 @@ import org.poem.biz.model.ReturnT;
 import org.poem.enums.ExecutorBlockStrategyEnum;
 import org.poem.glue.GlueTypeEnum;
 import org.poem.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +38,7 @@ import java.util.*;
 @RequestMapping("/jobinfo")
 public class JobInfoController {
 
+    private static final Logger logger = LoggerFactory.getLogger(JobInfoController.class);
     @Resource
     private XxlJobGroupDao xxlJobGroupDao;
     @Resource
@@ -97,37 +100,42 @@ public class JobInfoController {
     public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,
                                         @RequestParam(required = false, defaultValue = "10") int length,
                                         Long jobGroup, int triggerStatus, String jobDesc, String executorHandler, String author) {
-
+        logger.info("JobInfoController-pageList: " );
         return xxlJobService.pageList(start, length, jobGroup, triggerStatus, jobDesc, executorHandler, author);
     }
 
     @RequestMapping("/add")
     @ResponseBody
     public ReturnT<String> add(XxlJobInfo jobInfo) {
+        logger.info("JobInfoController-add: " + jobInfo);
         return xxlJobService.add(jobInfo);
     }
 
     @RequestMapping("/update")
     @ResponseBody
     public ReturnT<String> update(XxlJobInfo jobInfo) {
+        logger.info("JobInfoController-update: " + jobInfo);
         return xxlJobService.update(jobInfo);
     }
 
     @RequestMapping("/remove")
     @ResponseBody
     public ReturnT<String> remove(Long id) {
+        logger.info("JobInfoController-remove: " + id);
         return xxlJobService.remove(id);
     }
 
     @RequestMapping("/stop")
     @ResponseBody
     public ReturnT<String> pause(Long id) {
+        logger.info("JobInfoController-pause: " + id);
         return xxlJobService.stop(id);
     }
 
     @RequestMapping("/start")
     @ResponseBody
     public ReturnT<String> start(Long id) {
+        logger.info("JobInfoController-start: " + id);
         return xxlJobService.start(id);
     }
 
@@ -135,6 +143,7 @@ public class JobInfoController {
     @ResponseBody
     //@PermissionLimit(limit = false)
     public ReturnT<String> triggerJob(Long id, String executorParam, String addressList) {
+        logger.info("JobInfoController-triggerJob: " + id + " [executorParam]:" + executorParam + " [addressList]:" + addressList);
         // force cover job param
         if (executorParam == null) {
             executorParam = "";
@@ -147,6 +156,7 @@ public class JobInfoController {
     @RequestMapping("/nextTriggerTime")
     @ResponseBody
     public ReturnT<List<String>> nextTriggerTime(String cron) {
+        logger.info("JobInfoController-nextTriggerTime: " + cron);
         List<String> result = new ArrayList<>();
         try {
             CronExpression cronExpression = new CronExpression(cron);

@@ -8,6 +8,8 @@ import org.poem.biz.model.RegistryParam;
 import org.poem.biz.model.ReturnT;
 import org.poem.util.GsonTool;
 import org.poem.util.XxlJobRemotingUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class JobApiController {
 
+    private static final Logger logger = LoggerFactory.getLogger(JobApiController.class);
     @Resource
     private AdminBiz adminBiz;
 
@@ -39,7 +42,7 @@ public class JobApiController {
     @ResponseBody
     @PermissionLimit(limit = false)
     public ReturnT<String> api(HttpServletRequest request, @PathVariable("uri") String uri, @RequestBody(required = false) String data) {
-
+        logger.info("JobApiController-api [uri]:"+ uri + "[data]:" + data);
         // valid
         if (!"POST".equalsIgnoreCase(request.getMethod())) {
             return new ReturnT<String>(ReturnT.FAIL_CODE, "invalid request, HttpMethod not support.");

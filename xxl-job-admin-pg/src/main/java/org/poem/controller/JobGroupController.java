@@ -9,6 +9,8 @@ import org.poem.dao.XxlJobRegistryDao;
 import org.poem.biz.model.ReturnT;
 import org.poem.enums.RegistryConfig;
 import org.poem.util.SnowflakeIdWorker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,7 @@ import java.util.*;
 @RequestMapping("/jobgroup")
 public class JobGroupController {
 
+    private static final Logger logger = LoggerFactory.getLogger(JobGroupController.class);
     @Resource
     public XxlJobInfoDao xxlJobInfoDao;
     @Resource
@@ -62,7 +65,7 @@ public class JobGroupController {
     @RequestMapping("/save")
     @ResponseBody
     public ReturnT<String> save(XxlJobGroup xxlJobGroup) {
-
+        logger.info("JobGroupController:save" + xxlJobGroup);
         // valid
         if (xxlJobGroup.getAppname() == null || xxlJobGroup.getAppname().trim().length() == 0) {
             return new ReturnT<String>(500, (I18nUtil.getString("system_please_input") + "AppName"));
@@ -92,6 +95,7 @@ public class JobGroupController {
     @RequestMapping("/update")
     @ResponseBody
     public ReturnT<String> update(XxlJobGroup xxlJobGroup) {
+        logger.info("JobGroupController:update" + xxlJobGroup);
         // valid
         if (xxlJobGroup.getAppname() == null || xxlJobGroup.getAppname().trim().length() == 0) {
             return new ReturnT<String>(500, (I18nUtil.getString("system_please_input") + "AppName"));

@@ -64,6 +64,11 @@ public class XxlJobRemotingUtil {
      * @return
      */
     public static ReturnT postBody(String url, String accessToken, int timeout, Object requestObj, Class returnTargClassOfT) {
+        logger.info("postBody[url]:" + url);
+        logger.info("postBody[accessToken]:" + accessToken);
+        logger.info("postBody[timeout]:" + timeout);
+        logger.info("postBody[requestObj]:" + requestObj);
+        logger.info("postBody[returnTargClassOfT]:" + returnTargClassOfT.getName());
         HttpURLConnection connection = null;
         BufferedReader bufferedReader = null;
         try {
