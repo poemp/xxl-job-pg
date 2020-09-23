@@ -17,7 +17,7 @@ public interface XxlJobInfoDao {
 
     public List<XxlJobInfo> pageList(@Param("offset") int offset,
                                      @Param("pagesize") int pagesize,
-                                     @Param("jobGroup") int jobGroup,
+                                     @Param("jobGroup") Long jobGroup,
                                      @Param("triggerStatus") int triggerStatus,
                                      @Param("jobDesc") String jobDesc,
                                      @Param("executorHandler") String executorHandler,
@@ -25,7 +25,7 @@ public interface XxlJobInfoDao {
 
     public int pageListCount(@Param("offset") int offset,
                              @Param("pagesize") int pagesize,
-                             @Param("jobGroup") int jobGroup,
+                             @Param("jobGroup") Long jobGroup,
                              @Param("triggerStatus") int triggerStatus,
                              @Param("jobDesc") String jobDesc,
                              @Param("executorHandler") String executorHandler,
@@ -39,7 +39,7 @@ public interface XxlJobInfoDao {
 
     public int delete(@Param("id") long id);
 
-    public List<XxlJobInfo> getJobsByGroup(@Param("jobGroup") int jobGroup);
+    public List<XxlJobInfo> getJobsByGroup(@Param("jobGroup") Long jobGroup);
 
     public int findAllCount();
 

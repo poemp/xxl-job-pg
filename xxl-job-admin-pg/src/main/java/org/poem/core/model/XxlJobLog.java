@@ -12,7 +12,7 @@ public class XxlJobLog {
     private long id;
 
     // job info
-    private int jobGroup;
+    private Long jobGroup;
     private long jobId;
 
     // execute info
@@ -43,11 +43,11 @@ public class XxlJobLog {
         this.id = id;
     }
 
-    public int getJobGroup() {
+    public Long getJobGroup() {
         return jobGroup;
     }
 
-    public void setJobGroup(int jobGroup) {
+    public void setJobGroup(Long jobGroup) {
         this.jobGroup = jobGroup;
     }
 

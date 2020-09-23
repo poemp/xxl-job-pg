@@ -105,16 +105,16 @@ public class JobGroupController {
         if (xxlJobGroup.getAddressType() == 0) {
             // 0=自动注册
             List<String> registryList = findRegistryByAppName(xxlJobGroup.getAppname());
-            String addressListStr = null;
+            StringBuilder addressListStr = null;
             if (registryList != null && !registryList.isEmpty()) {
                 Collections.sort(registryList);
-                addressListStr = "";
+                addressListStr = new StringBuilder();
                 for (String item : registryList) {
-                    addressListStr += item + ",";
+                    addressListStr.append(item).append(",");
                 }
-                addressListStr = addressListStr.substring(0, addressListStr.length() - 1);
+                addressListStr = new StringBuilder(addressListStr.substring(0, addressListStr.length() - 1));
             }
-            xxlJobGroup.setAddressList(addressListStr);
+            xxlJobGroup.setAddressList(addressListStr.toString());
         } else {
             // 1=手动录入
             if (xxlJobGroup.getAddressList() == null || xxlJobGroup.getAddressList().trim().length() == 0) {
@@ -156,7 +156,7 @@ public class JobGroupController {
 
     @RequestMapping("/remove")
     @ResponseBody
-    public ReturnT<String> remove(int id) {
+    public ReturnT<String> remove(Long id) {
 
         // valid
         int count = xxlJobInfoDao.pageListCount(0, 10, id, -1, null, null, null);
@@ -175,7 +175,7 @@ public class JobGroupController {
 
     @RequestMapping("/loadById")
     @ResponseBody
-    public ReturnT<XxlJobGroup> loadById(int id) {
+    public ReturnT<XxlJobGroup> loadById(Long id) {
         XxlJobGroup jobGroup = xxlJobGroupDao.load(id);
         return jobGroup != null ? new ReturnT<XxlJobGroup>(jobGroup) : new ReturnT<XxlJobGroup>(ReturnT.FAIL_CODE, null);
     }

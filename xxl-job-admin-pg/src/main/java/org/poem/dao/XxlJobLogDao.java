@@ -19,21 +19,21 @@ public interface XxlJobLogDao {
     // exist jobId not use jobGroup, not exist use jobGroup
     public List<XxlJobLog> pageList(@Param("offset") int offset,
                                     @Param("pagesize") int pagesize,
-                                    @Param("jobGroup") int jobGroup,
-                                    @Param("jobId") int jobId,
+                                    @Param("jobGroup") Long jobGroup,
+                                    @Param("jobId") Long jobId,
                                     @Param("triggerTimeStart") Date triggerTimeStart,
                                     @Param("triggerTimeEnd") Date triggerTimeEnd,
                                     @Param("logStatus") int logStatus);
 
     public int pageListCount(@Param("offset") int offset,
                              @Param("pagesize") int pagesize,
-                             @Param("jobGroup") int jobGroup,
-                             @Param("jobId") int jobId,
+                             @Param("jobGroup") Long jobGroup,
+                             @Param("jobId") Long jobId,
                              @Param("triggerTimeStart") Date triggerTimeStart,
                              @Param("triggerTimeEnd") Date triggerTimeEnd,
                              @Param("logStatus") int logStatus);
 
-    public XxlJobLog load(@Param("id") long id);
+    public XxlJobLog load(@Param("id") Long id);
 
     public long save(XxlJobLog xxlJobLog);
 
@@ -41,13 +41,13 @@ public interface XxlJobLogDao {
 
     public int updateHandleInfo(XxlJobLog xxlJobLog);
 
-    public int delete(@Param("jobId") int jobId);
+    public int delete(@Param("jobId") Long jobId);
 
     public Map<String, Object> findLogReport(@Param("from") Date from,
                                              @Param("to") Date to);
 
-    public List<Long> findClearLogIds(@Param("jobGroup") int jobGroup,
-                                      @Param("jobId") int jobId,
+    public List<Long> findClearLogIds(@Param("jobGroup") Long jobGroup,
+                                      @Param("jobId") Long jobId,
                                       @Param("clearBeforeTime") Date clearBeforeTime,
                                       @Param("clearBeforeNum") int clearBeforeNum,
                                       @Param("pagesize") int pagesize);

@@ -44,7 +44,7 @@ public class XxlJobServiceImpl implements XxlJobService {
     private XxlJobLogReportDao xxlJobLogReportDao;
 
     @Override
-    public Map<String, Object> pageList(int start, int length, int jobGroup, int triggerStatus, String jobDesc, String executorHandler, String author) {
+    public Map<String, Object> pageList(int start, int length, Long jobGroup, int triggerStatus, String jobDesc, String executorHandler, String author) {
 
         // page list
         List<XxlJobInfo> list = xxlJobInfoDao.pageList(start, length, jobGroup, triggerStatus, jobDesc, executorHandler, author);
@@ -235,7 +235,7 @@ public class XxlJobServiceImpl implements XxlJobService {
     }
 
     @Override
-    public ReturnT<String> remove(int id) {
+    public ReturnT<String> remove(Long id) {
         XxlJobInfo xxlJobInfo = xxlJobInfoDao.loadById(id);
         if (xxlJobInfo == null) {
             return ReturnT.SUCCESS;
@@ -248,7 +248,7 @@ public class XxlJobServiceImpl implements XxlJobService {
     }
 
     @Override
-    public ReturnT<String> start(int id) {
+    public ReturnT<String> start(Long id) {
         XxlJobInfo xxlJobInfo = xxlJobInfoDao.loadById(id);
 
         // next trigger time (5s后生效，避开预读周期)
@@ -274,7 +274,7 @@ public class XxlJobServiceImpl implements XxlJobService {
     }
 
     @Override
-    public ReturnT<String> stop(int id) {
+    public ReturnT<String> stop(Long id) {
         XxlJobInfo xxlJobInfo = xxlJobInfoDao.loadById(id);
 
         xxlJobInfo.setTriggerStatus(0);

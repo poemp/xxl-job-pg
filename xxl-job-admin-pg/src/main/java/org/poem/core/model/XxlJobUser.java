@@ -54,7 +54,7 @@ public class XxlJobUser {
     }
 
     // plugin
-    public boolean validPermission(int jobGroup) {
+    public boolean validPermission(Long jobGroup) {
         if (this.role == 1) {
             return true;
         } else {

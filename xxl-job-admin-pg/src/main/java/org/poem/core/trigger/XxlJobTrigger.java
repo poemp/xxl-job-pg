@@ -119,6 +119,8 @@ public class XxlJobTrigger {
         jobLog.setJobGroup(jobInfo.getJobGroup());
         jobLog.setJobId(jobInfo.getId());
         jobLog.setTriggerTime(new Date());
+        jobLog.setExecutorFailRetryCount(1);
+        jobLog.setAlarmStatus(0);
         XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().save(jobLog);
         logger.debug(">>>>>>>>>>> xxl-job trigger start, jobId:{}", jobLog.getId());
 
