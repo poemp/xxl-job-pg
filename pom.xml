@@ -6,6 +6,7 @@
     <modules>
         <module>xxl-job-core-pg</module>
         <module>xxl-job-admin-pg</module>
+        <module>xxl-job-executor-samples</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
