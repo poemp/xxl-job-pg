@@ -35,6 +35,26 @@ public class SampleXxlJob {
 
 
     /**
+     * 执行
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @XxlJob("execHandler")
+    public ReturnT<String> execHandler(String param) throws Exception{
+        logger.info("===========================");
+        logger.info("===========================");
+        logger.info("===========================");
+        logger.info("===========================");
+        logger.info("===========================");
+        logger.info("===========================");
+        logger.info("===========================");
+        logger.info("===========================");
+        logger.info("===========================");
+        logger.info("===========================");
+        return ReturnT.SUCCESS;
+    }
+    /**
      * 1、简单任务示例（Bean模式）
      */
     @XxlJob("demoJobHandler")

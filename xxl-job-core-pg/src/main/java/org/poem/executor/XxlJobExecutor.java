@@ -175,9 +175,16 @@ public class XxlJobExecutor {
     // ---------------------- job handler repository ----------------------
     private static ConcurrentMap<String, IJobHandler> jobHandlerRepository = new ConcurrentHashMap<String, IJobHandler>();
 
-    public static IJobHandler registJobHandler(String name, IJobHandler jobHandler) {
-        logger.info(">>>>>>>>>>> xxl-job register jobhandler success, name:{}, jobHandler:{}", name, jobHandler);
-        return jobHandlerRepository.put(name, jobHandler);
+    /**
+     * regist
+     *
+     * @param name
+     * @param jobHandler
+     * @return
+     */
+    public static void registJobHandler(String name, IJobHandler jobHandler) {
+        logger.info("\n>>>>>>>>>>> xxl-job register jobhandler success, name:{}, jobHandler:{}", name, jobHandler);
+        jobHandlerRepository.put(name, jobHandler);
     }
 
     public static IJobHandler loadJobHandler(String name) {
