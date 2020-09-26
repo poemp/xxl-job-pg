@@ -498,7 +498,7 @@ Concrete contet describe as follows：
 <context:component-scan base-package="com.xxl.job.executor.service.jobhandler" />
 
 <!-- configure 02、Excutor：executer core configure -->
-<bean id="xxlJobExecutor" class="com.xxl.job.core.executor.XxlJobExecutor" init-method="start" destroy-method="destroy" >
+<bean id="xxlJobExecutor" class="org.poem.executor.XxlJobExecutor" init-method="start" destroy-method="destroy" >
     <!-- executor IP[required]，auto get if it blank -->
     <property name="ip" value="${xxl.job.executor.ip}" />
     <!-- executor port[required] -->
@@ -600,7 +600,7 @@ On the log console,you can view task execution log on the executor immediately a
 The task logic exist in the executor project as JobHandler,the develop steps as shown below:
 
 #### Step 1:develp obHandler in the executor project
-    - 1, create new java class implent com.xxl.job.core.handler.IJobHandler;
+    - 1, create new java class implent org.poem.handler.IJobHandler;
     - 2, if you add @Component annotation on the top of the class name it’s will be managed as a bean instance by spring container;
     - 3, add  “@JobHandler(value=" customize jobhandler name")” annotation，the value stand for JobHandler name,it will be used as JobHandler property when create a new task in the schedule center.
 
@@ -865,7 +865,7 @@ When schedule center of the schedule module was deployed as web service, on one 
 
 The source code location of schedule center’s “log callback api service” as shown below:
 ```
-xxl-job-admin#com.xxl.job.admin.controller.JobApiController.callback
+xxl-job-admin#org.poem.controller.JobApiController.callback
 ```
 
 Executor will execute task when it receive task execute request.it will notify the task execute result to schedule center when the task is done. 
@@ -1004,9 +1004,9 @@ The scheduling center provides API services for executors and business parties t
     3. Executor registration remove services;
     4. Triggers a single execution service, and support the task to be triggered according to the business event;
 
-The scheduling center API service location: com.xxl.job.core.biz.AdminBiz.java
+The scheduling center API service location: org.poem.biz.AdminBiz.java
 
-The scheduling center API service requests reference code：com.xxl.job.adminbiz.AdminBizTest.java
+The scheduling center API service requests reference code：org.poembiz.AdminBizTest.java
 
 
 ## 6 Version update log

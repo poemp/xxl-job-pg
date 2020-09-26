@@ -13,7 +13,6 @@ public class ExecutorBizClient implements ExecutorBiz {
 
     public ExecutorBizClient() {
     }
-
     public ExecutorBizClient(String addressUrl, String accessToken) {
         this.addressUrl = addressUrl;
         this.accessToken = accessToken;
@@ -24,19 +23,19 @@ public class ExecutorBizClient implements ExecutorBiz {
         }
     }
 
-    private String addressUrl;
+    private String addressUrl ;
     private String accessToken;
     private int timeout = 3;
 
 
     @Override
     public ReturnT<String> beat() {
-        return XxlJobRemotingUtil.postBody(addressUrl + "beat", accessToken, timeout, null, String.class);
+        return XxlJobRemotingUtil.postBody(addressUrl+"beat", accessToken, timeout, null, String.class);
     }
 
     @Override
-    public ReturnT<String> idleBeat(IdleBeatParam idleBeatParam) {
-        return XxlJobRemotingUtil.postBody(addressUrl + "idleBeat", accessToken, timeout, idleBeatParam, String.class);
+    public ReturnT<String> idleBeat(IdleBeatParam idleBeatParam){
+        return XxlJobRemotingUtil.postBody(addressUrl+"idleBeat", accessToken, timeout, idleBeatParam, String.class);
     }
 
     @Override

@@ -10,22 +10,22 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * 单个JOB对应的每个执行器，使用频率最低的优先被选举
- * a(*)、LFU(Least Frequently Used)：最不经常使用，频率/次数
- * b、LRU(Least Recently Used)：最近最久未使用，时间
- * <p>
+ *      a(*)、LFU(Least Frequently Used)：最不经常使用，频率/次数
+ *      b、LRU(Least Recently Used)：最近最久未使用，时间
+ *
  * Created by xuxueli on 17/3/10.
  */
 public class ExecutorRouteLFU extends ExecutorRouter {
 
-    private static ConcurrentMap<Long, HashMap<String, Integer>> jobLfuMap = new ConcurrentHashMap<>();
+    private static ConcurrentMap<Long, HashMap<String, Integer>> jobLfuMap = new ConcurrentHashMap<Long, HashMap<String, Integer>>();
     private static long CACHE_VALID_TIME = 0;
 
-    public String route(long jobId, List<String> addressList) {
+    public String route(Long jobId, List<String> addressList) {
 
         // cache clear
         if (System.currentTimeMillis() > CACHE_VALID_TIME) {
             jobLfuMap.clear();
-            CACHE_VALID_TIME = System.currentTimeMillis() + 1000 * 60 * 60 * 24;
+            CACHE_VALID_TIME = System.currentTimeMillis() + 1000*60*60*24;
         }
 
         // lfu item init
@@ -36,20 +36,20 @@ public class ExecutorRouteLFU extends ExecutorRouter {
         }
 
         // put new
-        for (String address : addressList) {
-            if (!lfuItemMap.containsKey(address) || lfuItemMap.get(address) > 1000000) {
+        for (String address: addressList) {
+            if (!lfuItemMap.containsKey(address) || lfuItemMap.get(address) >1000000 ) {
                 lfuItemMap.put(address, new Random().nextInt(addressList.size()));  // 初始化时主动Random一次，缓解首次压力
             }
         }
         // remove old
         List<String> delKeys = new ArrayList<>();
-        for (String existKey : lfuItemMap.keySet()) {
+        for (String existKey: lfuItemMap.keySet()) {
             if (!addressList.contains(existKey)) {
                 delKeys.add(existKey);
             }
         }
         if (delKeys.size() > 0) {
-            for (String delKey : delKeys) {
+            for (String delKey: delKeys) {
                 lfuItemMap.remove(delKey);
             }
         }

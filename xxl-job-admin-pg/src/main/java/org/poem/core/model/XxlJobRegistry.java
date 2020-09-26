@@ -7,17 +7,17 @@ import java.util.Date;
  */
 public class XxlJobRegistry {
 
-    private Long id;
+    private long id;
     private String registryGroup;
     private String registryKey;
     private String registryValue;
     private Date updateTime;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

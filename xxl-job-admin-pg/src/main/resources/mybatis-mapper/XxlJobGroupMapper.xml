@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.poem.dao.XxlJobGroupDao">
+	
+	<resultMap id="XxlJobGroup" type="org.poem.core.model.XxlJobGroup" >
+		<result column="id" property="id" />
+	    <result column="app_name" property="appname" />
+	    <result column="title" property="title" />
+		<result column="address_type" property="addressType" />
+		<result column="address_list" property="addressList" />
+	</resultMap>
 
-    <resultMap id="XxlJobGroup" type="org.poem.core.model.XxlJobGroup">
-        <result column="id" property="id"/>
-        <result column="app_name" property="appname"/>
-        <result column="title" property="title"/>
-        <result column="address_type" property="addressType"/>
-        <result column="address_list" property="addressList"/>
-    </resultMap>
-
-    <sql id="Base_Column_List">
+	<sql id="Base_Column_List">
 		t.id,
 		t.app_name,
 		t.title,
@@ -19,27 +19,25 @@
 		t.address_list
 	</sql>
 
-    <select id="findAll" resultMap="XxlJobGroup">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM xxl_job_group AS t
-        ORDER BY t.app_name, t.title, t.id ASC
-    </select>
+	<select id="findAll" resultMap="XxlJobGroup">
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_job_group AS t
+		ORDER BY t.app_name, t.title, t.id ASC
+	</select>
 
-    <select id="findByAddressType" parameterType="java.lang.Integer" resultMap="XxlJobGroup">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM xxl_job_group AS t
-        WHERE t.address_type = #{addressType}
-        ORDER BY t.app_name, t.title, t.id ASC
-    </select>
+	<select id="findByAddressType" parameterType="java.lang.Integer" resultMap="XxlJobGroup">
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_job_group AS t
+		WHERE t.address_type = #{addressType}
+		ORDER BY t.app_name, t.title, t.id ASC
+	</select>
 
-    <insert id="save" parameterType="org.poem.core.model.XxlJobGroup" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO xxl_job_group ("id",  "app_name", "title", "address_type", "address_list")
-		values ( #{id},  #{appname}, #{title}, #{addressType}, #{addressList});
+	<insert id="save" parameterType="org.poem.core.model.XxlJobGroup" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO xxl_job_group ("id", "app_name", "title", "address_type", "address_list")
+		values ( #{id}, #{appname}, #{title}, #{addressType}, #{addressList});
 	</insert>
 
-    <update id="update" parameterType="org.poem.core.model.XxlJobGroup">
+	<update id="update" parameterType="org.poem.core.model.XxlJobGroup" >
 		UPDATE xxl_job_group
 		SET "app_name" = #{appname},
 			"title" = #{title},
@@ -60,33 +58,32 @@
         WHERE t.id = #{id}
     </select>
 
-    <select id="pageList" parameterType="java.util.HashMap" resultMap="XxlJobGroup">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM xxl_job_group AS t
-        <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="appname != null and appname != ''">
-                AND t.app_name like CONCAT(CONCAT('%', #{appname}), '%')
-            </if>
-            <if test="title != null and title != ''">
-                AND t.title like CONCAT(CONCAT('%', #{title}), '%')
-            </if>
-        </trim>
-        ORDER BY t.app_name, t.title, t.id ASC
-        LIMIT #{pagesize} OFFSET #{offset}
-    </select>
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="XxlJobGroup">
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_job_group AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="appname != null and appname != ''">
+				AND t.app_name like CONCAT(CONCAT('%', #{appname}), '%')
+			</if>
+			<if test="title != null and title != ''">
+				AND t.title like CONCAT(CONCAT('%', #{title}), '%')
+			</if>
+		</trim>
+		ORDER BY t.app_name, t.title, t.id ASC
+		LIMIT #{pagesize} OFFSET #{offset}
+	</select>
 
-    <select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
-        SELECT count(1)
-        FROM xxl_job_group AS t
-        <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="appname != null and appname != ''">
-                AND t.app_name like CONCAT(CONCAT('%', #{appname}), '%')
-            </if>
-            <if test="title != null and title != ''">
-                AND t.title like CONCAT(CONCAT('%', #{title}), '%')
-            </if>
-        </trim>
-    </select>
+	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(1)
+		FROM xxl_job_group AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="appname != null and appname != ''">
+				AND t.app_name like CONCAT(CONCAT('%', #{appname}), '%')
+			</if>
+			<if test="title != null and title != ''">
+				AND t.title like CONCAT(CONCAT('%', #{title}), '%')
+			</if>
+		</trim>
+	</select>
 
 </mapper>

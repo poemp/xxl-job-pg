@@ -99,7 +99,7 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
             } catch (Throwable ex) {
                 logger.error("xxl-job method-jobhandler resolve error for bean[" + beanDefinitionName + "].", ex);
             }
-            if (annotatedMethods == null || annotatedMethods.isEmpty()) {
+            if (annotatedMethods==null || annotatedMethods.isEmpty()) {
                 continue;
             }
 

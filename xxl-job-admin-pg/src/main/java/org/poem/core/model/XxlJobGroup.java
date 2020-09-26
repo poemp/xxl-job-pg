@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class XxlJobGroup {
 
-    private Long id;
+    private long id;
     private String appname;
     private String title;
     private int addressType;        // 执行器地址类型：0=自动注册、1=手动录入
@@ -17,19 +17,18 @@ public class XxlJobGroup {
 
     // registry list
     private List<String> registryList;  // 执行器地址列表(系统注册)
-
     public List<String> getRegistryList() {
-        if (addressList != null && addressList.trim().length() > 0) {
+        if (addressList!=null && addressList.trim().length()>0) {
             registryList = new ArrayList<String>(Arrays.asList(addressList.split(",")));
         }
         return registryList;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

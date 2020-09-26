@@ -9,7 +9,6 @@ public interface ExecutorBiz {
 
     /**
      * beat
-     *
      * @return
      */
     public ReturnT<String> beat();
@@ -24,7 +23,6 @@ public interface ExecutorBiz {
 
     /**
      * run
-     *
      * @param triggerParam
      * @return
      */
@@ -32,7 +30,6 @@ public interface ExecutorBiz {
 
     /**
      * kill
-     *
      * @param killParam
      * @return
      */
@@ -40,7 +37,6 @@ public interface ExecutorBiz {
 
     /**
      * log
-     *
      * @param logParam
      * @return
      */

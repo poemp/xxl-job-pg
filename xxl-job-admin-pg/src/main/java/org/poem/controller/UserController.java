@@ -8,7 +8,7 @@ import org.poem.dao.XxlJobGroupDao;
 import org.poem.dao.XxlJobUserDao;
 import org.poem.service.LoginService;
 import org.poem.biz.model.ReturnT;
-import org.poem.util.SnowflakeIdWorker;
+import org.poem.util.SnowFlake;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
@@ -96,7 +96,7 @@ public class UserController {
         }
 
         // write
-        xxlJobUser.setId(SnowflakeIdWorker.generateId());
+        xxlJobUser.setId(SnowFlake.genLongId());
         xxlJobUserDao.save(xxlJobUser);
         return ReturnT.SUCCESS;
     }
@@ -132,7 +132,7 @@ public class UserController {
     @RequestMapping("/remove")
     @ResponseBody
     @PermissionLimit(adminuser = true)
-    public ReturnT<String> remove(HttpServletRequest request, int id) {
+    public ReturnT<String> remove(HttpServletRequest request, long id) {
 
         // avoid opt login seft
         XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);

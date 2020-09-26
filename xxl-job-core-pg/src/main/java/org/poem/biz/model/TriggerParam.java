@@ -5,10 +5,10 @@ import java.io.Serializable;
 /**
  * Created by xuxueli on 16/7/22.
  */
-public class TriggerParam implements Serializable {
+public class TriggerParam implements Serializable{
     private static final long serialVersionUID = 42L;
 
-    private Long jobId;
+    private long jobId;
 
     private String executorHandler;
     private String executorParams;
@@ -26,11 +26,11 @@ public class TriggerParam implements Serializable {
     private int broadcastTotal;
 
 
-    public Long getJobId() {
+    public long getJobId() {
         return jobId;
     }
 
-    public void setJobId(Long jobId) {
+    public void setJobId(long jobId) {
         this.jobId = jobId;
     }
 

@@ -10,19 +10,18 @@ public class KillParam implements Serializable {
 
     public KillParam() {
     }
-
-    public KillParam(Long jobId) {
+    public KillParam(long jobId) {
         this.jobId = jobId;
     }
 
-    private Long jobId;
+    private long jobId;
 
 
-    public Long getJobId() {
+    public long getJobId() {
         return jobId;
     }
 
-    public void setJobId(Long jobId) {
+    public void setJobId(long jobId) {
         this.jobId = jobId;
     }
 
