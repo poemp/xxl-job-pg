@@ -64,17 +64,15 @@ public class TriggerCallbackThread {
                 while(!toStop){
                     try {
                         HandleCallbackParam callback = getInstance().callBackQueue.take();
-                        if (callback != null) {
 
-                            // callback list param
-                            List<HandleCallbackParam> callbackParamList = new ArrayList<HandleCallbackParam>();
-                            int drainToNum = getInstance().callBackQueue.drainTo(callbackParamList);
-                            callbackParamList.add(callback);
+                        // callback list param
+                        List<HandleCallbackParam> callbackParamList = new ArrayList<HandleCallbackParam>();
+                        int drainToNum = getInstance().callBackQueue.drainTo(callbackParamList);
+                        callbackParamList.add(callback);
 
-                            // callback, will retry if error
-                            if (callbackParamList!=null && callbackParamList.size()>0) {
-                                doCallback(callbackParamList);
-                            }
+                        // callback, will retry if error
+                        if (callbackParamList.size() > 0) {
+                            doCallback(callbackParamList);
                         }
                     } catch (Exception e) {
                         if (!toStop) {
@@ -87,7 +85,7 @@ public class TriggerCallbackThread {
                 try {
                     List<HandleCallbackParam> callbackParamList = new ArrayList<HandleCallbackParam>();
                     int drainToNum = getInstance().callBackQueue.drainTo(callbackParamList);
-                    if (callbackParamList!=null && callbackParamList.size()>0) {
+                    if (callbackParamList.size() > 0) {
                         doCallback(callbackParamList);
                     }
                 } catch (Exception e) {
