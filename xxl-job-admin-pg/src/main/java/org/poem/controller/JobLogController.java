@@ -117,7 +117,7 @@ public class JobLogController {
 	}
 
 	@RequestMapping("/logDetailPage")
-	public String logDetailPage(int id, Model model){
+	public String logDetailPage(long id, Model model){
 
 		// base check
 		ReturnT<String> logStatue = ReturnT.SUCCESS;
