@@ -113,7 +113,9 @@ public class JobGroupController {
 				}
 				addressListStr = new StringBuilder(addressListStr.substring(0, addressListStr.length() - 1));
 			}
-			xxlJobGroup.setAddressList(addressListStr.toString());
+			if (addressListStr != null) {
+				xxlJobGroup.setAddressList(addressListStr.toString());
+			}
 		} else {
 			// 1=手动录入
 			if (xxlJobGroup.getAddressList()==null || xxlJobGroup.getAddressList().trim().length()==0) {

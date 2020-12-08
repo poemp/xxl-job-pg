@@ -41,7 +41,7 @@ public class JobInfoController {
 	private XxlJobService xxlJobService;
 	
 	@RequestMapping
-	public String index(HttpServletRequest request, Model model, @RequestParam(required = false, defaultValue = "-1") int jobGroup) {
+	public String index(HttpServletRequest request, Model model, @RequestParam(required = false, defaultValue = "-1") Long jobGroup) {
 
 		// 枚举-字典
 		model.addAttribute("ExecutorRouteStrategyEnum", ExecutorRouteStrategyEnum.values());	    // 路由策略-列表
