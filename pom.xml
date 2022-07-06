@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>xxl-job-core-pg</module>
-        <module>xxl-job-admin-pg</module>
+        <module>xxl-job-core</module>
+        <module>xxl-job-admin</module>
         <module>xxl-job-springboot-example</module>
     </modules>
     <parent>
