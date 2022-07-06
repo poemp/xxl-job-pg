@@ -1,5 +1,6 @@
 package org.poem.controller;
 
+import org.poem.core.complete.XxlJobCompleter;
 import org.poem.core.exception.XxlJobException;
 import org.poem.core.model.XxlJobGroup;
 import org.poem.core.model.XxlJobInfo;
@@ -183,7 +184,7 @@ public class JobLogController {
 			log.setHandleCode(ReturnT.FAIL_CODE);
 			log.setHandleMsg( I18nUtil.getString("joblog_kill_log_byman")+":" + (runResult.getMsg()!=null?runResult.getMsg():""));
 			log.setHandleTime(new Date());
-			xxlJobLogDao.updateHandleInfo(log);
+			XxlJobCompleter.updateHandleInfoAndFinish(log);
 			return new ReturnT<String>(runResult.getMsg());
 		} else {
 			return new ReturnT<String>(500, runResult.getMsg());

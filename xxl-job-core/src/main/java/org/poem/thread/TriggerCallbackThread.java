@@ -4,10 +4,10 @@ import org.poem.biz.AdminBiz;
 import org.poem.biz.model.HandleCallbackParam;
 import org.poem.biz.model.ReturnT;
 import org.poem.context.XxlJobContext;
+import org.poem.context.XxlJobHelper;
 import org.poem.enums.RegistryConfig;
 import org.poem.executor.XxlJobExecutor;
 import org.poem.log.XxlJobFileAppender;
-import org.poem.log.XxlJobLogger;
 import org.poem.util.FileUtil;
 import org.poem.util.JdkSerializeTool;
 import org.slf4j.Logger;
@@ -64,15 +64,17 @@ public class TriggerCallbackThread {
                 while(!toStop){
                     try {
                         HandleCallbackParam callback = getInstance().callBackQueue.take();
+                        if (callback != null) {
 
-                        // callback list param
-                        List<HandleCallbackParam> callbackParamList = new ArrayList<HandleCallbackParam>();
-                        int drainToNum = getInstance().callBackQueue.drainTo(callbackParamList);
-                        callbackParamList.add(callback);
+                            // callback list param
+                            List<HandleCallbackParam> callbackParamList = new ArrayList<HandleCallbackParam>();
+                            int drainToNum = getInstance().callBackQueue.drainTo(callbackParamList);
+                            callbackParamList.add(callback);
 
-                        // callback, will retry if error
-                        if (callbackParamList.size() > 0) {
-                            doCallback(callbackParamList);
+                            // callback, will retry if error
+                            if (callbackParamList!=null && callbackParamList.size()>0) {
+                                doCallback(callbackParamList);
+                            }
                         }
                     } catch (Exception e) {
                         if (!toStop) {
@@ -85,7 +87,7 @@ public class TriggerCallbackThread {
                 try {
                     List<HandleCallbackParam> callbackParamList = new ArrayList<HandleCallbackParam>();
                     int drainToNum = getInstance().callBackQueue.drainTo(callbackParamList);
-                    if (callbackParamList.size() > 0) {
+                    if (callbackParamList!=null && callbackParamList.size()>0) {
                         doCallback(callbackParamList);
                     }
                 } catch (Exception e) {
@@ -93,7 +95,7 @@ public class TriggerCallbackThread {
                         logger.error(e.getMessage(), e);
                     }
                 }
-                logger.info(">>>>>>>>>>> xxl-job, executor callback thread destory.");
+                logger.info(">>>>>>>>>>> xxl-job, executor callback thread destroy.");
 
             }
         });
@@ -123,7 +125,7 @@ public class TriggerCallbackThread {
                         }
                     }
                 }
-                logger.info(">>>>>>>>>>> xxl-job, executor retry callback thread destory.");
+                logger.info(">>>>>>>>>>> xxl-job, executor retry callback thread destroy.");
             }
         });
         triggerRetryCallbackThread.setDaemon(true);
@@ -188,10 +190,11 @@ public class TriggerCallbackThread {
             String logFileName = XxlJobFileAppender.makeLogFileName(new Date(callbackParam.getLogDateTim()), callbackParam.getLogId());
             XxlJobContext.setXxlJobContext(new XxlJobContext(
                     -1,
+                    null,
                     logFileName,
                     -1,
                     -1));
-            XxlJobLogger.log(logContent);
+            XxlJobHelper.log(logContent);
         }
     }
 
@@ -239,6 +242,13 @@ public class TriggerCallbackThread {
         // load and clear file, retry
         for (File callbaclLogFile: callbackLogPath.listFiles()) {
             byte[] callbackParamList_bytes = FileUtil.readFileContent(callbaclLogFile);
+
+            // avoid empty file
+            if(callbackParamList_bytes == null || callbackParamList_bytes.length < 1){
+                callbaclLogFile.delete();
+                continue;
+            }
+
             List<HandleCallbackParam> callbackParamList = (List<HandleCallbackParam>) JdkSerializeTool.deserialize(callbackParamList_bytes, List.class);
 
             callbaclLogFile.delete();

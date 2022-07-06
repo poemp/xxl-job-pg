@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.poem.dao.XxlJobInfoDao">
+<mapper namespace="com.xxl.job.admin.dao.XxlJobInfoDao">
 
-	<resultMap id="XxlJobInfo" type="org.poem.core.model.XxlJobInfo" >
+	<resultMap id="XxlJobInfo" type="com.xxl.job.admin.core.model.XxlJobInfo" >
 		<result column="id" property="id" />
 
 		<result column="job_group" property="jobGroup" />
-	    <result column="job_cron" property="jobCron" />
 	    <result column="job_desc" property="jobDesc" />
 
 	    <result column="add_time" property="addTime" />
@@ -15,6 +14,10 @@
 
 	    <result column="author" property="author" />
 	    <result column="alarm_email" property="alarmEmail" />
+
+		<result column="schedule_type" property="scheduleType" />
+		<result column="schedule_conf" property="scheduleConf" />
+		<result column="misfire_strategy" property="misfireStrategy" />
 
 		<result column="executor_route_strategy" property="executorRouteStrategy" />
 		<result column="executor_handler" property="executorHandler" />
@@ -38,12 +41,14 @@
 	<sql id="Base_Column_List">
 		t.id,
 		t.job_group,
-		t.job_cron,
 		t.job_desc,
 		t.add_time,
 		t.update_time,
 		t.author,
 		t.alarm_email,
+		t.schedule_type,
+		t.schedule_conf,
+		t.misfire_strategy,
 		t.executor_route_strategy,
 		t.executor_handler,
 		t.executor_param,
@@ -81,7 +86,7 @@
 			</if>
 		</trim>
 		ORDER BY id DESC
-		LIMIT #{pagesize} OFFSET #{offset}
+		LIMIT #{offset}, #{pagesize}
 	</select>
 
 	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
@@ -106,16 +111,17 @@
 		</trim>
 	</select>
 
-	<insert id="save" parameterType="org.poem.core.model.XxlJobInfo" useGeneratedKeys="true" keyProperty="id" >
+	<insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobInfo" useGeneratedKeys="true" keyProperty="id" >
 		INSERT INTO xxl_job_info (
-		    id,
 			job_group,
-			job_cron,
 			job_desc,
 			add_time,
 			update_time,
 			author,
 			alarm_email,
+			schedule_type,
+			schedule_conf,
+			misfire_strategy,
             executor_route_strategy,
 			executor_handler,
 			executor_param,
@@ -131,14 +137,15 @@
 			trigger_last_time,
 			trigger_next_time
 		) VALUES (
-		    #{id},
 			#{jobGroup},
-			#{jobCron},
 			#{jobDesc},
 			#{addTime},
 			#{updateTime},
 			#{author},
 			#{alarmEmail},
+			#{scheduleType},
+			#{scheduleConf},
+			#{misfireStrategy},
 			#{executorRouteStrategy},
 			#{executorHandler},
 			#{executorParam},
@@ -166,15 +173,17 @@
 		WHERE t.id = #{id}
 	</select>
 
-	<update id="update" parameterType="org.poem.core.model.XxlJobInfo" >
+	<update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobInfo" >
 		UPDATE xxl_job_info
 		SET
 			job_group = #{jobGroup},
-			job_cron = #{jobCron},
 			job_desc = #{jobDesc},
 			update_time = #{updateTime},
 			author = #{author},
 			alarm_email = #{alarmEmail},
+			schedule_type = #{scheduleType},
+			schedule_conf = #{scheduleConf},
+			misfire_strategy = #{misfireStrategy},
 			executor_route_strategy = #{executorRouteStrategy},
 			executor_handler = #{executorHandler},
 			executor_param = #{executorParam},
@@ -219,7 +228,7 @@
 		LIMIT #{pagesize}
 	</select>
 
-	<update id="scheduleUpdate" parameterType="org.poem.core.model.XxlJobInfo"  >
+	<update id="scheduleUpdate" parameterType="com.xxl.job.admin.core.model.XxlJobInfo"  >
 		UPDATE xxl_job_info
 		SET
 			trigger_last_time = #{triggerLastTime},

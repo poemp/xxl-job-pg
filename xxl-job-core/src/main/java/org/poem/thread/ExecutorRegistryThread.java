@@ -102,7 +102,7 @@ public class ExecutorRegistryThread {
                         logger.error(e.getMessage(), e);
                     }
                 }
-                logger.info(">>>>>>>>>>> xxl-job, executor registry thread destory.");
+                logger.info(">>>>>>>>>>> xxl-job, executor registry thread destroy.");
 
             }
         });
@@ -113,13 +113,17 @@ public class ExecutorRegistryThread {
 
     public void toStop() {
         toStop = true;
+
         // interrupt and wait
-        registryThread.interrupt();
-        try {
-            registryThread.join();
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage(), e);
+        if (registryThread != null) {
+            registryThread.interrupt();
+            try {
+                registryThread.join();
+            } catch (InterruptedException e) {
+                logger.error(e.getMessage(), e);
+            }
         }
+
     }
 
 }

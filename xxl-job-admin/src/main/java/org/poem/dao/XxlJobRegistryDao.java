@@ -26,8 +26,7 @@ public interface XxlJobRegistryDao {
                               @Param("registryValue") String registryValue,
                               @Param("updateTime") Date updateTime);
 
-    public int registrySave(@Param("id") Long id,
-                            @Param("registryGroup") String registryGroup,
+    public int registrySave(@Param("registryGroup") String registryGroup,
                             @Param("registryKey") String registryKey,
                             @Param("registryValue") String registryValue,
                             @Param("updateTime") Date updateTime);

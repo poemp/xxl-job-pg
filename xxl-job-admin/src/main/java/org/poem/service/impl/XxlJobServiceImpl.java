@@ -6,6 +6,8 @@ import org.poem.core.model.XxlJobGroup;
 import org.poem.core.model.XxlJobInfo;
 import org.poem.core.model.XxlJobLogReport;
 import org.poem.core.route.ExecutorRouteStrategyEnum;
+import org.poem.core.scheduler.MisfireStrategyEnum;
+import org.poem.core.scheduler.ScheduleTypeEnum;
 import org.poem.core.thread.JobScheduleHelper;
 import org.poem.core.util.I18nUtil;
 import org.poem.dao.*;
@@ -64,20 +66,34 @@ public class XxlJobServiceImpl implements XxlJobService {
 		if (group == null) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("system_please_choose")+I18nUtil.getString("jobinfo_field_jobgroup")) );
 		}
-		if (!CronExpression.isValidExpression(jobInfo.getJobCron())) {
-			return new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("jobinfo_field_cron_unvalid") );
-		}
 		if (jobInfo.getJobDesc()==null || jobInfo.getJobDesc().trim().length()==0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("system_please_input")+I18nUtil.getString("jobinfo_field_jobdesc")) );
 		}
 		if (jobInfo.getAuthor()==null || jobInfo.getAuthor().trim().length()==0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("system_please_input")+I18nUtil.getString("jobinfo_field_author")) );
 		}
-		if (ExecutorRouteStrategyEnum.match(jobInfo.getExecutorRouteStrategy(), null) == null) {
-			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("jobinfo_field_executorRouteStrategy")+I18nUtil.getString("system_unvalid")) );
+
+		// valid trigger
+		ScheduleTypeEnum scheduleTypeEnum = ScheduleTypeEnum.match(jobInfo.getScheduleType(), null);
+		if (scheduleTypeEnum == null) {
+			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
 		}
-		if (ExecutorBlockStrategyEnum.match(jobInfo.getExecutorBlockStrategy(), null) == null) {
-			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("jobinfo_field_executorBlockStrategy")+I18nUtil.getString("system_unvalid")) );
+		if (scheduleTypeEnum == ScheduleTypeEnum.CRON) {
+			if (jobInfo.getScheduleConf()==null || !CronExpression.isValidExpression(jobInfo.getScheduleConf())) {
+				return new ReturnT<String>(ReturnT.FAIL_CODE, "Cron"+I18nUtil.getString("system_unvalid"));
+			}
+		} else if (scheduleTypeEnum == ScheduleTypeEnum.FIX_RATE/* || scheduleTypeEnum == ScheduleTypeEnum.FIX_DELAY*/) {
+			if (jobInfo.getScheduleConf() == null) {
+				return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")) );
+			}
+			try {
+				int fixSecond = Integer.valueOf(jobInfo.getScheduleConf());
+				if (fixSecond < 1) {
+					return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
+				}
+			} catch (Exception e) {
+				return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
+			}
 		}
 		if (GlueTypeEnum.match(jobInfo.getGlueType()) == null) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("jobinfo_field_gluetype")+I18nUtil.getString("system_unvalid")) );
@@ -91,8 +107,19 @@ public class XxlJobServiceImpl implements XxlJobService {
 			jobInfo.setGlueSource(jobInfo.getGlueSource().replaceAll("\r", ""));
 		}
 
-		// ChildJobId valid
-        if (jobInfo.getChildJobId()!=null && jobInfo.getChildJobId().trim().length()>0) {
+		// valid advanced
+		if (ExecutorRouteStrategyEnum.match(jobInfo.getExecutorRouteStrategy(), null) == null) {
+			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("jobinfo_field_executorRouteStrategy")+I18nUtil.getString("system_unvalid")) );
+		}
+		if (MisfireStrategyEnum.match(jobInfo.getMisfireStrategy(), null) == null) {
+			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("misfire_strategy")+I18nUtil.getString("system_unvalid")) );
+		}
+		if (ExecutorBlockStrategyEnum.match(jobInfo.getExecutorBlockStrategy(), null) == null) {
+			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("jobinfo_field_executorBlockStrategy")+I18nUtil.getString("system_unvalid")) );
+		}
+
+		// 》ChildJobId valid
+		if (jobInfo.getChildJobId()!=null && jobInfo.getChildJobId().trim().length()>0) {
 			String[] childJobIds = jobInfo.getChildJobId().split(",");
 			for (String childJobIdItem: childJobIds) {
 				if (childJobIdItem!=null && childJobIdItem.trim().length()>0 && isNumeric(childJobIdItem)) {
@@ -142,18 +169,43 @@ public class XxlJobServiceImpl implements XxlJobService {
 	@Override
 	public ReturnT<String> update(XxlJobInfo jobInfo) {
 
-		// valid
-		if (!CronExpression.isValidExpression(jobInfo.getJobCron())) {
-			return new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("jobinfo_field_cron_unvalid") );
-		}
+		// valid base
 		if (jobInfo.getJobDesc()==null || jobInfo.getJobDesc().trim().length()==0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("system_please_input")+I18nUtil.getString("jobinfo_field_jobdesc")) );
 		}
 		if (jobInfo.getAuthor()==null || jobInfo.getAuthor().trim().length()==0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("system_please_input")+I18nUtil.getString("jobinfo_field_author")) );
 		}
+
+		// valid trigger
+		ScheduleTypeEnum scheduleTypeEnum = ScheduleTypeEnum.match(jobInfo.getScheduleType(), null);
+		if (scheduleTypeEnum == null) {
+			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
+		}
+		if (scheduleTypeEnum == ScheduleTypeEnum.CRON) {
+			if (jobInfo.getScheduleConf()==null || !CronExpression.isValidExpression(jobInfo.getScheduleConf())) {
+				return new ReturnT<String>(ReturnT.FAIL_CODE, "Cron"+I18nUtil.getString("system_unvalid") );
+			}
+		} else if (scheduleTypeEnum == ScheduleTypeEnum.FIX_RATE /*|| scheduleTypeEnum == ScheduleTypeEnum.FIX_DELAY*/) {
+			if (jobInfo.getScheduleConf() == null) {
+				return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
+			}
+			try {
+				int fixSecond = Integer.valueOf(jobInfo.getScheduleConf());
+				if (fixSecond < 1) {
+					return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
+				}
+			} catch (Exception e) {
+				return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
+			}
+		}
+
+		// valid advanced
 		if (ExecutorRouteStrategyEnum.match(jobInfo.getExecutorRouteStrategy(), null) == null) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("jobinfo_field_executorRouteStrategy")+I18nUtil.getString("system_unvalid")) );
+		}
+		if (MisfireStrategyEnum.match(jobInfo.getMisfireStrategy(), null) == null) {
+			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("misfire_strategy")+I18nUtil.getString("system_unvalid")) );
 		}
 		if (ExecutorBlockStrategyEnum.match(jobInfo.getExecutorBlockStrategy(), null) == null) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("jobinfo_field_executorBlockStrategy")+I18nUtil.getString("system_unvalid")) );
@@ -199,24 +251,27 @@ public class XxlJobServiceImpl implements XxlJobService {
 
 		// next trigger time (5s后生效，避开预读周期)
 		long nextTriggerTime = exists_jobInfo.getTriggerNextTime();
-		if (exists_jobInfo.getTriggerStatus() == 1 && !jobInfo.getJobCron().equals(exists_jobInfo.getJobCron()) ) {
+		boolean scheduleDataNotChanged = jobInfo.getScheduleType().equals(exists_jobInfo.getScheduleType()) && jobInfo.getScheduleConf().equals(exists_jobInfo.getScheduleConf());
+		if (exists_jobInfo.getTriggerStatus() == 1 && !scheduleDataNotChanged) {
 			try {
-				Date nextValidTime = new CronExpression(jobInfo.getJobCron()).getNextValidTimeAfter(new Date(System.currentTimeMillis() + JobScheduleHelper.PRE_READ_MS));
+				Date nextValidTime = JobScheduleHelper.generateNextValidTime(jobInfo, new Date(System.currentTimeMillis() + JobScheduleHelper.PRE_READ_MS));
 				if (nextValidTime == null) {
-					return new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("jobinfo_field_cron_never_fire"));
+					return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
 				}
 				nextTriggerTime = nextValidTime.getTime();
-			} catch (ParseException e) {
+			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
-				return new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("jobinfo_field_cron_unvalid")+" | "+ e.getMessage());
+				return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
 			}
 		}
 
 		exists_jobInfo.setJobGroup(jobInfo.getJobGroup());
-		exists_jobInfo.setJobCron(jobInfo.getJobCron());
 		exists_jobInfo.setJobDesc(jobInfo.getJobDesc());
 		exists_jobInfo.setAuthor(jobInfo.getAuthor());
 		exists_jobInfo.setAlarmEmail(jobInfo.getAlarmEmail());
+		exists_jobInfo.setScheduleType(jobInfo.getScheduleType());
+		exists_jobInfo.setScheduleConf(jobInfo.getScheduleConf());
+		exists_jobInfo.setMisfireStrategy(jobInfo.getMisfireStrategy());
 		exists_jobInfo.setExecutorRouteStrategy(jobInfo.getExecutorRouteStrategy());
 		exists_jobInfo.setExecutorHandler(jobInfo.getExecutorHandler());
 		exists_jobInfo.setExecutorParam(jobInfo.getExecutorParam());
@@ -250,17 +305,23 @@ public class XxlJobServiceImpl implements XxlJobService {
 	public ReturnT<String> start(long id) {
 		XxlJobInfo xxlJobInfo = xxlJobInfoDao.loadById(id);
 
+		// valid
+		ScheduleTypeEnum scheduleTypeEnum = ScheduleTypeEnum.match(xxlJobInfo.getScheduleType(), ScheduleTypeEnum.NONE);
+		if (ScheduleTypeEnum.NONE == scheduleTypeEnum) {
+			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type_none_limit_start")) );
+		}
+
 		// next trigger time (5s后生效，避开预读周期)
 		long nextTriggerTime = 0;
 		try {
-			Date nextValidTime = new CronExpression(xxlJobInfo.getJobCron()).getNextValidTimeAfter(new Date(System.currentTimeMillis() + JobScheduleHelper.PRE_READ_MS));
+			Date nextValidTime = JobScheduleHelper.generateNextValidTime(xxlJobInfo, new Date(System.currentTimeMillis() + JobScheduleHelper.PRE_READ_MS));
 			if (nextValidTime == null) {
-				return new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("jobinfo_field_cron_never_fire"));
+				return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
 			}
 			nextTriggerTime = nextValidTime.getTime();
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("jobinfo_field_cron_unvalid")+" | "+ e.getMessage());
+			return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("schedule_type")+I18nUtil.getString("system_unvalid")) );
 		}
 
 		xxlJobInfo.setTriggerStatus(1);

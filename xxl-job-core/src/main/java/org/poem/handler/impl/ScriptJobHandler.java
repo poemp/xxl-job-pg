@@ -2,6 +2,7 @@ package org.poem.handler.impl;
 
 import org.poem.biz.model.ReturnT;
 import org.poem.context.XxlJobContext;
+import org.poem.context.XxlJobHelper;
 import org.poem.glue.GlueTypeEnum;
 import org.poem.handler.IJobHandler;
 import org.poem.log.XxlJobFileAppender;
@@ -46,10 +47,11 @@ public class ScriptJobHandler extends IJobHandler {
     }
 
     @Override
-    public ReturnT<String> execute(String param) throws Exception {
+    public void execute() throws Exception {
 
         if (!glueType.isScript()) {
-            return new ReturnT<String>(IJobHandler.FAIL.getCode(), "glueType["+ glueType +"] invalid.");
+            XxlJobHelper.handleFail("glueType["+ glueType +"] invalid.");
+            return;
         }
 
         // cmd
@@ -72,18 +74,20 @@ public class ScriptJobHandler extends IJobHandler {
 
         // script params：0=param、1=分片序号、2=分片总数
         String[] scriptParams = new String[3];
-        scriptParams[0] = param;
+        scriptParams[0] = XxlJobHelper.getJobParam();
         scriptParams[1] = String.valueOf(XxlJobContext.getXxlJobContext().getShardIndex());
         scriptParams[2] = String.valueOf(XxlJobContext.getXxlJobContext().getShardTotal());
 
         // invoke
-        XxlJobLogger.log("----------- script file:"+ scriptFileName +" -----------");
+        XxlJobHelper.log("----------- script file:"+ scriptFileName +" -----------");
         int exitValue = ScriptUtil.execToFile(cmd, scriptFileName, logFileName, scriptParams);
 
         if (exitValue == 0) {
-            return IJobHandler.SUCCESS;
+            XxlJobHelper.handleSuccess();
+            return;
         } else {
-            return new ReturnT<String>(IJobHandler.FAIL.getCode(), "script exit value("+exitValue+") is failed");
+            XxlJobHelper.handleFail("script exit value("+exitValue+") is failed");
+            return ;
         }
 
     }

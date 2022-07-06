@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.poem.dao.XxlJobLogDao">
+<mapper namespace="com.xxl.job.admin.dao.XxlJobLogDao">
 	
-	<resultMap id="XxlJobLog" type="org.poem.core.model.XxlJobLog" >
+	<resultMap id="XxlJobLog" type="com.xxl.job.admin.core.model.XxlJobLog" >
 		<result column="id" property="id" />
 
 		<result column="job_group" property="jobGroup" />
@@ -75,7 +75,7 @@
 			</if>
 		</trim>
 		ORDER BY t.trigger_time DESC
-		LIMIT #{pagesize} OFFSET #{offset}
+		LIMIT #{offset}, #{pagesize}
 	</select>
 	
 	<select id="pageListCount" resultType="int">
@@ -116,53 +116,47 @@
 		WHERE t.id = #{id}
 	</select>
 
-
-    <insert id="save" parameterType="org.poem.core.model.XxlJobLog" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO xxl_job_log (
-        "id",
-        "job_group",
-        "job_id",
-        "trigger_time",
-        "trigger_code",
-        "executor_fail_retry_count",
-        "handle_code",
-        "alarm_status"
-        ) VALUES (
-        #{id},
-        #{jobGroup},
-        #{jobId},
-        #{triggerTime},
-        #{triggerCode},
-        #{executorFailRetryCount},
-        #{handleCode},
-        #{alarmStatus}
-        );
-        <!--<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
-            SELECT LAST_INSERT_ID()
-        </selectKey>-->
-    </insert>
+	
+	<insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobLog" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO xxl_job_log (
+			`job_group`,
+			`job_id`,
+			`trigger_time`,
+			`trigger_code`,
+			`handle_code`
+		) VALUES (
+			#{jobGroup},
+			#{jobId},
+			#{triggerTime},
+			#{triggerCode},
+			#{handleCode}
+		);
+		<!--<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() 
+		</selectKey>-->
+	</insert>
 
 	<update id="updateTriggerInfo" >
 		UPDATE xxl_job_log
 		SET
-			"trigger_time"= #{triggerTime},
-			"trigger_code"= #{triggerCode},
-			"trigger_msg"= #{triggerMsg},
-			"executor_address"= #{executorAddress},
-			"executor_handler"=#{executorHandler},
-			"executor_param"= #{executorParam},
-			"executor_sharding_param"= #{executorShardingParam},
-			"executor_fail_retry_count"= #{executorFailRetryCount}
-		WHERE "id"= #{id}
+			`trigger_time`= #{triggerTime},
+			`trigger_code`= #{triggerCode},
+			`trigger_msg`= #{triggerMsg},
+			`executor_address`= #{executorAddress},
+			`executor_handler`=#{executorHandler},
+			`executor_param`= #{executorParam},
+			`executor_sharding_param`= #{executorShardingParam},
+			`executor_fail_retry_count`= #{executorFailRetryCount}
+		WHERE `id`= #{id}
 	</update>
 
 	<update id="updateHandleInfo">
 		UPDATE xxl_job_log
 		SET 
-			"handle_time"= #{handleTime},
-			"handle_code"= #{handleCode},
-			"handle_msg"= #{handleMsg}
-		WHERE "id"= #{id}
+			`handle_time`= #{handleTime}, 
+			`handle_code`= #{handleCode},
+			`handle_msg`= #{handleMsg}
+		WHERE `id`= #{id}
 	</update>
 	
 	<delete id="delete" >
@@ -234,13 +228,13 @@
 	</delete>
 
 	<select id="findFailJobLogIds" resultType="long" >
-		SELECT id FROM "xxl_job_log"
-		WHERE (
-			(trigger_code = 0 and handle_code != 0)
+		SELECT id FROM `xxl_job_log`
+		WHERE !(
+			(trigger_code in (0, 200) and handle_code = 0)
 			OR
-			(handle_code != 200 )
+			(handle_code = 200)
 		)
-		AND "alarm_status" = 0
+		AND `alarm_status` = 0
 		ORDER BY id ASC
 		LIMIT #{pagesize}
 	</select>
@@ -248,20 +242,32 @@
 	<update id="updateAlarmStatus" >
 		UPDATE xxl_job_log
 		SET
-			"alarm_status" = #{newAlarmStatus}
-		WHERE "id"= #{logId} AND "alarm_status" = #{oldAlarmStatus}
+			`alarm_status` = #{newAlarmStatus}
+		WHERE `id`= #{logId} AND `alarm_status` = #{oldAlarmStatus}
 	</update>
 
 	<select id="findLostJobIds" resultType="long" >
-		SELECT t.id
-		FROM xxl_job_log AS t
-		WHERE t.trigger_code = 200
-			and t.handle_code = 0
-			and t.trigger_time <![CDATA[ <= ]]> #{losedTime}
-			and t.executor_address not in (
-				SELECT t2.registry_value
-				FROM xxl_job_registry AS t2
-			)
+		SELECT
+			t.id
+		FROM
+			xxl_job_log t
+			LEFT JOIN xxl_job_registry t2 ON t.executor_address = t2.registry_value
+		WHERE
+			t.trigger_code = 200
+				AND t.handle_code = 0
+				AND t.trigger_time <![CDATA[ <= ]]> #{losedTime}
+				AND t2.id IS NULL;
 	</select>
+	<!--
+	SELECT t.id
+	FROM xxl_job_log AS t
+	WHERE t.trigger_code = 200
+		and t.handle_code = 0
+		and t.trigger_time <![CDATA[ <= ]]> #{losedTime}
+		and t.executor_address not in (
+			SELECT t2.registry_value
+			FROM xxl_job_registry AS t2
+		)
+	-->
 
 </mapper>

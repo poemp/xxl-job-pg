@@ -1,8 +1,7 @@
 package org.poem.handler.impl;
 
-import org.poem.biz.model.ReturnT;
+import org.poem.context.XxlJobHelper;
 import org.poem.handler.IJobHandler;
-import org.poem.log.XxlJobLogger;
 
 /**
  * glue job handler
@@ -22,9 +21,18 @@ public class GlueJobHandler extends IJobHandler {
 	}
 
 	@Override
-	public ReturnT<String> execute(String param) throws Exception {
-		XxlJobLogger.log("----------- glue.version:"+ glueUpdatetime +" -----------");
-		return jobHandler.execute(param);
+	public void execute() throws Exception {
+		 XxlJobHelper.log("----------- glue.version:"+ glueUpdatetime +" -----------");
+		jobHandler.execute();
 	}
 
+	@Override
+	public void init() throws Exception {
+		this.jobHandler.init();
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		this.jobHandler.destroy();
+	}
 }
