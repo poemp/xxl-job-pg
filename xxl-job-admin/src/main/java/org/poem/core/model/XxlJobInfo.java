@@ -8,16 +8,15 @@ import java.util.Date;
  * @author xuxueli  2016-1-12 18:25:49
  */
 public class XxlJobInfo {
-	
+
 	private long id;				// 主键ID
-	
+
 	private long jobGroup;		// 执行器主键ID
-	private String jobCron;		// 任务执行CRON表达式
 	private String jobDesc;
-	
+
 	private Date addTime;
 	private Date updateTime;
-	
+
 	private String author;		// 负责人
 	private String alarmEmail;	// 报警邮件
 
@@ -31,8 +30,8 @@ public class XxlJobInfo {
 	private String executorBlockStrategy;	// 阻塞处理策略
 	private int executorTimeout;     		// 任务执行超时时间，单位秒
 	private int executorFailRetryCount;		// 失败重试次数
-	
-	private String glueType;		// GLUE类型	#org.poem.glue.GlueTypeEnum
+
+	private String glueType;		// GLUE类型	#com.xxl.job.core.glue.GlueTypeEnum
 	private String glueSource;		// GLUE源代码
 	private String glueRemark;		// GLUE备注
 	private Date glueUpdatetime;	// GLUE更新时间

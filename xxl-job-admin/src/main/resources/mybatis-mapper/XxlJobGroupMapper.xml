@@ -35,8 +35,8 @@
 	</select>
 
 	<insert id="save" parameterType="org.poem.core.model.XxlJobGroup" useGeneratedKeys="true" keyProperty="id" >
-		INSERT INTO xxl_job_group ( app_name, title, address_type, address_list, update_time)
-		values ( #{appname}, #{title}, #{addressType}, #{addressList}, #{updateTime} );
+		INSERT INTO xxl_job_group (id, app_name, title, address_type, address_list, update_time)
+		values ( #{id},#{appname}, #{title}, #{addressType}, #{addressList}, #{updateTime} );
 	</insert>
 
 	<update id="update" parameterType="org.poem.core.model.XxlJobGroup" >

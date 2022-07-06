@@ -14,3 +14,6 @@ ALTER TABLE "xxl_job_group"
     ADD COLUMN "update_time" date;
 
 COMMENT ON COLUMN "xxl_job_group"."update_time" IS '更新时间';
+
+ALTER TABLE  "xxl_job_info"
+DROP COLUMN "job_cron";

@@ -113,6 +113,7 @@
 
 	<insert id="save" parameterType="org.poem.core.model.XxlJobInfo" useGeneratedKeys="true" keyProperty="id" >
 		INSERT INTO xxl_job_info (
+		    id,
 			job_group,
 			job_desc,
 			add_time,
@@ -137,6 +138,7 @@
 			trigger_last_time,
 			trigger_next_time
 		) VALUES (
+		    #{id},
 			#{jobGroup},
 			#{jobDesc},
 			#{addTime},

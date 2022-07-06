@@ -21,11 +21,13 @@
 	
 	<insert id="save" parameterType="org.poem.core.model.XxlJobLogReport" useGeneratedKeys="true" keyProperty="id" >
 		INSERT INTO xxl_job_log_report (
+		    id,
 			trigger_day,
 			running_count,
 			suc_count,
 			fail_count
 		) VALUES (
+		    #{triggerDay},
 			#{triggerDay},
 			#{runningCount},
 			#{sucCount},

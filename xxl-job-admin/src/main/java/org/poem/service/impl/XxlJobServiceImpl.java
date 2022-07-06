@@ -135,13 +135,13 @@ public class XxlJobServiceImpl implements XxlJobService {
 			}
 
 			// join , avoid "xxx,,"
-			String temp = "";
+			StringBuilder temp = new StringBuilder();
 			for (String item:childJobIds) {
-				temp += item + ",";
+				temp.append(item).append(",");
 			}
-			temp = temp.substring(0, temp.length()-1);
+			temp = new StringBuilder(temp.substring(0, temp.length() - 1));
 
-			jobInfo.setChildJobId(temp);
+			jobInfo.setChildJobId(temp.toString());
 		}
 
 		// add in db

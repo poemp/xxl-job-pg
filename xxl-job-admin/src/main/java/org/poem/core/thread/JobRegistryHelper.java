@@ -6,6 +6,7 @@ import org.poem.core.conf.XxlJobAdminConfig;
 import org.poem.core.model.XxlJobGroup;
 import org.poem.core.model.XxlJobRegistry;
 import org.poem.enums.RegistryConfig;
+import org.poem.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -161,7 +162,7 @@ public class JobRegistryHelper {
 			public void run() {
 				int ret = XxlJobAdminConfig.getAdminConfig().getXxlJobRegistryDao().registryUpdate(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue(), new Date());
 				if (ret < 1) {
-					XxlJobAdminConfig.getAdminConfig().getXxlJobRegistryDao().registrySave(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue(), new Date());
+					XxlJobAdminConfig.getAdminConfig().getXxlJobRegistryDao().registrySave(SnowFlake.genLongId(),registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue(), new Date());
 
 					// fresh
 					freshGroupRegistryInfo(registryParam);

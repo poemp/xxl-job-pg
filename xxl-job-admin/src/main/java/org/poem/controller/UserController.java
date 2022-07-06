@@ -103,6 +103,7 @@ public class UserController {
         }
 
         // write
+        xxlJobUser.setId(SnowFlake.genLongId());
         xxlJobUserDao.save(xxlJobUser);
         return ReturnT.SUCCESS;
     }

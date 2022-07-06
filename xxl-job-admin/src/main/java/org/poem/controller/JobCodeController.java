@@ -83,7 +83,7 @@ public class JobCodeController {
 		xxlJobLogGlue.setGlueType(exists_jobInfo.getGlueType());
 		xxlJobLogGlue.setGlueSource(glueSource);
 		xxlJobLogGlue.setGlueRemark(glueRemark);
-
+		xxlJobLogGlue.setId(SnowFlake.genLongId());
 		xxlJobLogGlue.setAddTime(new Date());
 		xxlJobLogGlue.setUpdateTime(new Date());
 		xxlJobLogGlue.setId(SnowFlake.genLongId());

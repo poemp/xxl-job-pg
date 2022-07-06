@@ -25,6 +25,7 @@
 	
 	<insert id="save" parameterType="org.poem.core.model.XxlJobLogGlue" useGeneratedKeys="true" keyProperty="id" >
 		INSERT INTO xxl_job_logglue (
+		    id,
 			job_id,
 			glue_type,
 			glue_source,
@@ -32,6 +33,7 @@
 			add_time,
 			update_time
 		) VALUES (
+		    #{id},
 			#{jobId},
 			#{glueType},
 			#{glueSource},

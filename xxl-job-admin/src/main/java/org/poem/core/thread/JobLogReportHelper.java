@@ -84,6 +84,7 @@ public class JobLogReportHelper {
                             // do refresh
                             int ret = XxlJobAdminConfig.getAdminConfig().getXxlJobLogReportDao().update(xxlJobLogReport);
                             if (ret < 1) {
+                                xxlJobLogReport.setId(SnowFlake.genLongId());
                                 XxlJobAdminConfig.getAdminConfig().getXxlJobLogReportDao().save(xxlJobLogReport);
                             }
                         }

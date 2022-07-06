@@ -55,11 +55,13 @@
 
 	<insert id="save" parameterType="org.poem.core.model.XxlJobUser" useGeneratedKeys="true" keyProperty="id" >
 		INSERT INTO xxl_job_user (
+			id,
 			username,
 			password,
 			role,
 			permission
 		) VALUES (
+			#{id},
 			#{username},
 			#{password},
 			#{role},
