@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Created by xuxueli on 16/9/30.
+ *
+ * @author xuxueli
+ * @date 16/9/30
  */
 @Mapper
 public interface XxlJobGroupDao {
