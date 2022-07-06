@@ -75,7 +75,7 @@
 			</if>
 		</trim>
 		ORDER BY t.trigger_time DESC
-		LIMIT  #{offset} OFFSET #{pagesize}
+		LIMIT  #{pagesize} OFFSET #{offset}
 	</select>
 	
 	<select id="pageListCount" resultType="int">

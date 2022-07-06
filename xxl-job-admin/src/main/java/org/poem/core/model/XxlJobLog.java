@@ -154,4 +154,5 @@ public class XxlJobLog {
 		this.alarmStatus = alarmStatus;
 	}
 
+
 }
